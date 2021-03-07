@@ -8,6 +8,7 @@ from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
 from datetime import datetime
 
+
 # page config
 st.set_page_config(layout='wide')
 
@@ -178,8 +179,8 @@ def commercial_attributes(_data_):
         max_yr_built
     )
 
-    min_date = datetime.strptime(datetime.strftime(_data_['date'].min(), format='%Y-%m-%d'), '%Y-%m-%d')
-    max_date = datetime.strptime(datetime.strftime(_data_['date'].max(), format='%Y-%m-%d'), '%Y-%m-%d')
+    min_date = datetime.strptime(_data_['date'].min(), '%Y%m%dT%H%M%S')
+    max_date = datetime.strptime(_data_['date'].max(), '%Y%m%dT%H%M%S')
 
     st.sidebar.subheader('Select Max Date')
     f_date = st.sidebar.slider(
@@ -211,8 +212,9 @@ def commercial_attributes(_data_):
 
     # graph 2: average price per day
     st.subheader('Average Price per Day')
-    _data_['date'] = pd.to_datetime(_data_['date'], format='%Y-%m-%d')
-    _df_ = _data_.loc[_data_['date'] <= f_date]
+    _df_ = _data_.copy()
+    _df_['date'] = pd.to_datetime(_df_['date'], format='%Y-%m-%d')
+    _df_ = _df_.loc[_df_['date'] <= f_date]
     _df_ = _df_[['date', 'price']].groupby('date').mean().reset_index()
 
     _fig_ = px.line(_df_, x='date', y='price')
