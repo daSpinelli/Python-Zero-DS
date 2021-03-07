@@ -277,7 +277,7 @@ def physical_attributes(_data_):
     _c1_.plotly_chart(_fig_, use_container_width=True)
 
     # histogram 4: house per water view
-    _c2_.subheader('Water View')
+    _c2_.subheader('Houses With Water View')
 
     if f_waterview:
         _df_ = _data_[_data_['waterfront'] == 1]
